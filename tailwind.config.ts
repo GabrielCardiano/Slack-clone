@@ -50,7 +50,12 @@ const config: Config = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+				slack: {
+					'purple-1': '#611f69',
+					'purple-2': '#4a154b',
+					'gray-1': '#5e5d6073',
+				}
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

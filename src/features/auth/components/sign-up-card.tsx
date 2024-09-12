@@ -41,6 +41,7 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             placeholder="Email"
             type="email"
             required
+            className="border-slack-gray-1 rounded-[12px]"
           />
           <Input
             onChange={(e) => setPassword(e.target.value)}
@@ -49,6 +50,7 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             placeholder="Password"
             type="password"
             required
+            className="border-slack-gray-1 rounded-[12px]"
           />
           <Input
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -57,9 +59,10 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             placeholder="Confirm password"
             type="password"
             required
+            className="border-slack-gray-1 rounded-[12px]"
           />
-          <Button type="submit" className="w-full" size="lg" disabled={false}>
-            Continue
+          <Button type="submit" size="lg" disabled={false} variant="primary" className="w-full rounded-[12px] font-medium text-base">
+            Sign Up With Email
           </Button>
         </form>
 
@@ -71,10 +74,10 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             disabled={false}
             variant="outline"
             size="lg"
-            className="w-full relative"
+            className="w-full border-[2px] border-slack-gray-1 rounded-[12px] font-medium text-base flex gap-3"
           >
-            <FcGoogle className="size-5 absolute top-2.5 left-2.5" />
-            Continue with Google
+            <FcGoogle className="size-5" />
+            <span>Sign Up With Google</span>
           </Button>
 
           <Button
@@ -82,10 +85,10 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             disabled={false}
             variant="outline"
             size="lg"
-            className="w-full relative"
+            className="w-full border-[2px] border-slack-gray-1 rounded-[12px] font-medium text-base flex gap-3"
           >
-            <FaGithub className="size-5 absolute top-2.5 left-2.5" />
-            Continue with Github
+            <FaGithub className="size-5" />
+            <span>Sign Up With Github</span>
           </Button>
         </div>
 
