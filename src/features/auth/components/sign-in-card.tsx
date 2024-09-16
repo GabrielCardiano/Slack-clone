@@ -22,11 +22,15 @@ interface SignUpCardProps {
 
 export const SignInCard = ({ setState }: SignUpCardProps) => {
   const { signIn } = useAuthActions();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [pending, setPending] = useState(false);
 
-  const handleProviderSignIn = (value: 'github' | 'google') => {
-    signIn(value);
+  const onProviderSignIn = (value: 'github' | 'google') => {
+    setPending(true);
+    signIn(value)
+      .finally(() => setPending(false));
   }
 
   return (
@@ -42,7 +46,7 @@ export const SignInCard = ({ setState }: SignUpCardProps) => {
         <form className="space-y-2.5">
           <Input
             onChange={(e) => setEmail(e.target.value)}
-            disabled={false}
+            disabled={pending}
             value={email}
             placeholder="Email"
             type="email"
@@ -51,14 +55,14 @@ export const SignInCard = ({ setState }: SignUpCardProps) => {
           />
           <Input
             onChange={(e) => setPassword(e.target.value)}
-            disabled={false}
+            disabled={pending}
             value={password}
             placeholder="Password"
             type="password"
             required
             className="border-slack-gray-1 rounded-[12px]"
           />
-          <Button type="submit" size="lg" disabled={false} variant="primary" className="w-full
+          <Button type="submit" size="lg" disabled={pending} variant="primary" className="w-full
            rounded-[12px] font-medium text-base">
             Sign In With Email
           </Button>
@@ -68,8 +72,8 @@ export const SignInCard = ({ setState }: SignUpCardProps) => {
 
         <div className="flex flex-col gap-y-2.5">
           <Button
-            onClick={() => handleProviderSignIn("google")}
-            disabled={false}
+            onClick={() => onProviderSignIn("google")}
+            disabled={pending}
             variant="outline"
             size="lg"
             className="w-full border-[2px] border-slack-gray-1 rounded-[12px] font-medium text-base flex gap-3"
@@ -79,8 +83,8 @@ export const SignInCard = ({ setState }: SignUpCardProps) => {
           </Button>
 
           <Button
-            onClick={() => handleProviderSignIn("github")}
-            disabled={false}
+            onClick={() => onProviderSignIn("github")}
+            disabled={pending}
             variant="outline"
             size="lg"
             className="w-full border-[2px] border-slack-gray-1 rounded-[12px] font-medium text-base flex gap-3"
