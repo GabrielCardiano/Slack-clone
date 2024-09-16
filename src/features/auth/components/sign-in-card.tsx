@@ -86,12 +86,12 @@ export const SignInCard = ({ setState }: SignUpCardProps) => {
               <GoEye
                 onClick={() => setHidePassword(!hidePassword)}
                 size={16}
-                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer active:bg-slack-gray-1 active:rounded-full"
               />) : (
               <GoEyeClosed
                 onClick={() => setHidePassword(!hidePassword)}
                 size={16}
-                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer active:bg-slack-gray-1 active:rounded-full"
               />
             )}
           </div>
