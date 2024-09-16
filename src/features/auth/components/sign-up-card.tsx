@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { GoEyeClosed, GoEye } from "react-icons/go";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,15 +14,45 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { SignInFlow } from "../types";
-
+import { TriangleAlert } from "lucide-react";
+import { useAuthActions } from "@convex-dev/auth/react";
 interface SignUpCardProps {
   setState: (state: SignInFlow) => void;
 }
 
 export const SignUpCard = ({ setState }: SignUpCardProps) => {
+  const { signIn } = useAuthActions();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+  const [hidePassword, setHidePassword] = useState(false);
+  const [hideConfirmPassword, setHideConfirmPassword] = useState(false);
+
+
+  const onPasswordSignUp = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setPending(true);
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      // return;
+    }
+
+    // setPending(true);
+
+    signIn("password", { email, password, flow: "signUp" })
+      .catch(() => setError("Invalid email or password"))
+      .finally(() => setPending(false));
+  }
+
+  const onProviderSignUp = (value: 'github' | 'google') => {
+    setPending(true);
+    signIn(value)
+      .finally(() => setPending(false));
+  }
 
   return (
     <Card className="h-full w-full p-8">
@@ -32,36 +63,79 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
         </CardDescription>
       </CardHeader>
 
+      {!!error && (
+        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+          <TriangleAlert className="size-4" />
+          <p>{error}</p>
+        </div>
+      )}
+
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5">
+        <form onSubmit={onPasswordSignUp} className="space-y-2.5">
           <Input
             onChange={(e) => setEmail(e.target.value)}
-            disabled={false}
+            disabled={pending}
             value={email}
             placeholder="Email"
             type="email"
             required
             className="border-slack-gray-1 rounded-[12px]"
           />
-          <Input
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={false}
-            value={password}
-            placeholder="Password"
-            type="password"
-            required
-            className="border-slack-gray-1 rounded-[12px]"
-          />
-          <Input
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            disabled={false}
-            value={confirmPassword}
-            placeholder="Confirm password"
-            type="password"
-            required
-            className="border-slack-gray-1 rounded-[12px]"
-          />
-          <Button type="submit" size="lg" disabled={false} variant="primary" className="w-full rounded-[12px] font-medium text-base">
+
+          <div className="relative">
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={pending}
+              value={password}
+              placeholder="Password"
+              type={!!hidePassword ? "text" : "password"}
+              required
+              className="border-slack-gray-1 rounded-[12px]"
+            />
+            {hidePassword ? (
+              <GoEye
+                onClick={() => setHidePassword(!hidePassword)}
+                size={16}
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+              />) : (
+              <GoEyeClosed
+                onClick={() => setHidePassword(!hidePassword)}
+                size={16}
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+              />
+            )}
+          </div>
+
+          <div className="relative">
+            <Input
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={pending}
+              value={confirmPassword}
+              placeholder="Confirm password"
+              type={!!hideConfirmPassword ? "text" : "password"}
+              required
+              className="border-slack-gray-1 rounded-[12px]"
+            />
+            {hideConfirmPassword ? (
+              <GoEye
+                onClick={() => setHideConfirmPassword(!hideConfirmPassword)}
+                size={16}
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+              />) : (
+              <GoEyeClosed
+                onClick={() => setHideConfirmPassword(!hideConfirmPassword)}
+                size={16}
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+              />
+            )}
+          </div>
+
+          <Button
+            type="submit"
+            size="lg"
+            disabled={pending}
+            variant="primary"
+            className="w-full rounded-[12px] font-medium text-base">
             Sign Up With Email
           </Button>
         </form>
@@ -70,8 +144,8 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
 
         <div className="flex flex-col gap-y-2.5">
           <Button
-            onClick={() => { }}
-            disabled={false}
+            onClick={() => onProviderSignUp("google")}
+            disabled={pending}
             variant="outline"
             size="lg"
             className="w-full border-[2px] border-slack-gray-1 rounded-[12px] font-medium text-base flex gap-3"
@@ -81,8 +155,8 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
           </Button>
 
           <Button
-            onClick={() => { }}
-            disabled={false}
+            onClick={() => onProviderSignUp("github")}
+            disabled={pending}
             variant="outline"
             size="lg"
             className="w-full border-[2px] border-slack-gray-1 rounded-[12px] font-medium text-base flex gap-3"

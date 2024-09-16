@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { GoEyeClosed, GoEye } from "react-icons/go";
+
 
 import { useAuthActions } from "@convex-dev/auth/react";
 
@@ -15,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { SignInFlow } from "../types";
+import { TriangleAlert } from "lucide-react";
 
 interface SignUpCardProps {
   setState: (state: SignInFlow) => void;
@@ -26,6 +29,16 @@ export const SignInCard = ({ setState }: SignUpCardProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+  const [hidePassword, setHidePassword] = useState(false);
+
+  const onPasswordSignIn = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setPending(true);
+    signIn("password", { email, password, flow: "signIn" })
+      .catch(() => setError("Invalid email or password"))
+      .finally(() => setPending(false));
+  }
 
   const onProviderSignIn = (value: 'github' | 'google') => {
     setPending(true);
@@ -42,8 +55,14 @@ export const SignInCard = ({ setState }: SignUpCardProps) => {
         </CardDescription>
       </CardHeader>
 
+      {!!error && (
+        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+          <TriangleAlert className="size-4" />
+          <p>{error}</p>
+        </div>
+      )}
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5">
+        <form onSubmit={onPasswordSignIn} className="space-y-2.5">
           <Input
             onChange={(e) => setEmail(e.target.value)}
             disabled={pending}
@@ -53,15 +72,30 @@ export const SignInCard = ({ setState }: SignUpCardProps) => {
             required
             className="border-slack-gray-1 rounded-[12px]"
           />
-          <Input
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={pending}
-            value={password}
-            placeholder="Password"
-            type="password"
-            required
-            className="border-slack-gray-1 rounded-[12px]"
-          />
+          <div className="relative">
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={pending}
+              value={password}
+              placeholder="Password"
+              type={!!hidePassword ? "text" : "password"}
+              required
+              className="border-slack-gray-1 rounded-[12px]"
+            />
+            {!!hidePassword ? (
+              <GoEye
+                onClick={() => setHidePassword(!hidePassword)}
+                size={16}
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+              />) : (
+              <GoEyeClosed
+                onClick={() => setHidePassword(!hidePassword)}
+                size={16}
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+              />
+            )}
+          </div>
+
           <Button type="submit" size="lg" disabled={pending} variant="primary" className="w-full
            rounded-[12px] font-medium text-base">
             Sign In With Email
