@@ -1,6 +1,7 @@
 import { auth } from "./auth";
 import { query } from "./_generated/server";
 
+// GET user by id.
 export const current = query({
   args: {},
   handler: async (ctx) => {
