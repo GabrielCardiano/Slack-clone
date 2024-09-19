@@ -54,6 +54,7 @@ const config: Config = {
 				slack: {
 					'purple-1': '#611f69',
 					'purple-2': '#4a154b',
+					'purple-3': '#481349',
 					'gray-1': '#5e5d6073',
 				}
   		},
