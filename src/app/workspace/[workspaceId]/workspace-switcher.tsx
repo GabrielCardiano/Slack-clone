@@ -29,16 +29,17 @@ export const WorkspaceSwitcher = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button className="
           size-9
           relative 
-           overflow-hidden
-          bg-slack-gray-2
-          hover:bg-slack-gray-2/80
-          text-slate-800 
+          overflow-hidden
+          bg-white
+          hover:bg-white/80
+          text-slack-purple-3
           font-semibold
-          text-xl"
+          text-xl
+          rounded-full"
         >
           {workspaceIsLoading ?
             (<Loader className="size-5 animate-spin shrink-0" />) : (workspace?.name.charAt(0).toUpperCase())
@@ -61,13 +62,14 @@ export const WorkspaceSwitcher = () => {
             className="cursor-pointer capitalize"
           >
             <div className="
-             shrink-0
+              shrink-0
               size-9 
               relative 
               overflow-hidden
               bg-slack-gray-4 
               text-white 
-              font-semibold text-lg
+              font-semibold
+              text-lg
               rounded-md
               flex
               items-center
