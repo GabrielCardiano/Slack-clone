@@ -56,6 +56,9 @@ const config: Config = {
 					'purple-2': '#4a154b',
 					'purple-3': '#481349',
 					'gray-1': '#5e5d6073',
+					'gray-2': '#ABABAD',
+					'gray-3': '#F2F2F2',
+					'gray-4': '#616061',
 				}
   		},
   		borderRadius: {
