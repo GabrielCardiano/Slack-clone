@@ -1,5 +1,4 @@
 import { useParams } from "next/navigation";
-
 import { Id } from "@/_generated/dataModel";
 
 export const useWorkspaceId = () => {
