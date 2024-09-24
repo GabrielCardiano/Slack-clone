@@ -1,10 +1,13 @@
 "use client";
 
+import { WorkspaceHeader } from "./workspace-header";
+import { SidebarItem } from "./sidebar-item";
+
 import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useWorkspaceId } from "@/hooks/use-workspace-id"
-import { AlertTriangleIcon, LoaderIcon } from "lucide-react";
-import { WorkspaceHeader } from "./workspace-header";
+
+import { AlertTriangleIcon, LoaderIcon, MessageSquareTextIcon, SendHorizonal } from "lucide-react";
 
 export const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
@@ -30,7 +33,20 @@ export const WorkspaceSidebar = () => {
 
   return (
     <div className="flex flex-col bg-slack-purple-1 h-full">
-      <WorkspaceHeader  workspace={workspace} isAdmin={member.role === "admin"} />
+      <WorkspaceHeader workspace={workspace} isAdmin={member.role === "admin"} />
+
+      <div className="flex flex-col px-2 mt-3 gap-1.5">
+        <SidebarItem
+          label="Threads"
+          icon={MessageSquareTextIcon}
+          id="threads"
+        />
+        <SidebarItem
+          label="Drafts & Sent"
+          icon={SendHorizonal}
+          id="drafts"
+        />
+      </div>
     </div>
   )
 }
