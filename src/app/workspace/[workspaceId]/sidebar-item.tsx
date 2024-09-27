@@ -6,7 +6,7 @@ import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const sideBarItemVariants = cva(
+const sidebarItemVariants = cva(
   "flex items-center gap-1.5 justify-start font-normal h-7 px-[18px] text-sm overflow-hidden",
   {
     variants: {
@@ -25,7 +25,7 @@ interface SidebarItemProps {
   label: string;
   id: string;
   icon: LucideIcon | IconType;
-  variant?: VariantProps<typeof sideBarItemVariants>["variant"];
+  variant?: VariantProps<typeof sidebarItemVariants>["variant"];
 }
 
 export const SidebarItem = ({ icon: Icon, id, label, variant }: SidebarItemProps) => {
@@ -36,7 +36,7 @@ export const SidebarItem = ({ icon: Icon, id, label, variant }: SidebarItemProps
       asChild
       variant="transparent"
       size="sm"
-      className={cn(sideBarItemVariants({ variant }))}
+      className={cn(sidebarItemVariants({ variant }))}
     >
       <Link href={`/workspace/${workspaceId}/channel/${id}}`}>
         <Icon className="size-3.5 mr-1 shrink-0" />
