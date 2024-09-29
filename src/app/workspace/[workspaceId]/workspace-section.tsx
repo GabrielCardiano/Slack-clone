@@ -3,7 +3,7 @@ import React from "react";
 import { useToggle } from "react-use";
 import { cn } from "@/lib/utils";
 
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretRight } from "react-icons/fa";
 import { PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Hint } from "@/components/hint";
@@ -27,7 +27,7 @@ export const WorkspaceSection = ({ children, hint, label, onNew }: WorkspaceSect
           variant="transparent"
           className="p-0.5 text-sm text-[#f9edffcc] shrink-0 size-6 "
         >
-          <FaCaretDown className={cn("size-4 transition-transform", on && "-rotate-90")} />
+          <FaCaretRight className={cn("size-4 transition-transform", on && "rotate-90")} />
         </Button>
 
         <Button
