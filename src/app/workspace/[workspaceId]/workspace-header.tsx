@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ListFilterIcon, SquarePenIcon } from "lucide-react";
 import { PreferencesModal } from "./preferences-modal";
+import { InviteModal } from "./invite-modal";
 
 interface WorkspaceHeaderProps {
   workspace: Doc<"workspaces">;
@@ -19,11 +20,23 @@ interface WorkspaceHeaderProps {
 }
 
 export const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
-  const [preferencesOpen, preferencesSetOpen] = useState(false);
+  const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   return (
     <>
-      <PreferencesModal open={preferencesOpen} setOpen={preferencesSetOpen} initialValue={workspace.name} />
+      <InviteModal
+        open={inviteOpen}
+        setOpen={setInviteOpen}
+        name={workspace.name}
+        joinCode={workspace.joinCode}
+      />
+
+      <PreferencesModal
+        open={preferencesOpen}
+        setOpen={setPreferencesOpen}
+        initialValue={workspace.name}
+      />
 
       <div className="flex items-center justify-between px-4 h-[49px] gap-0.5">
         <DropdownMenu>
@@ -68,12 +81,12 @@ export const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) =>
             {isAdmin && (
               <>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => { }} className="cursor-pointer py-2">
+                <DropdownMenuItem onClick={() => setInviteOpen(true)} className="cursor-pointer py-2">
                   Invite people to {workspace.name}
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => preferencesSetOpen(true)} className="cursor-pointer py-2">
+                <DropdownMenuItem onClick={() => setPreferencesOpen(true)} className="cursor-pointer py-2">
                   Preferences
                 </DropdownMenuItem>
               </>
